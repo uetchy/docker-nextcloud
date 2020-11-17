@@ -1,8 +1,8 @@
 start:
-	docker-compose up -d
+	docker-compose up -d --build
 
 stop:
-	docker-compose down
+	docker-compose down --remove-orphans
 
 pull:
 	docker-compose pull
