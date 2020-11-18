@@ -8,37 +8,59 @@ services:
     volumes:
       - ${LOCAL_DB_DIR}:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
+  redis:
+    image: redis:alpine
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    restart: always
+
   app:
-    depends_on:
-      - db
-    build: ./docker
+    build: ./docker/app
     restart: always
     volumes:
       - ${LOCAL_DATA_DIR}:/var/www/html
-      - ${LOCAL_CONF_DIR}:/var/www/html/config
-      - ${LOCAL_APPS_DIR}:/var/www/html/apps
-      - ${LOCAL_DATA_DIR}/conf/php.ini:/usr/local/etc/php/conf.d/zzz-custom.ini
     environment:
       NEXTCLOUD_ADMIN_USER: ${NEXTCLOUD_ADMIN_USER}
       NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}
-      NEXTCLOUD_DATA_DIR: /var/www/html/data
-      NEXTCLOUD_TABLE_PREFIX:
       NEXTCLOUD_TRUSTED_DOMAINS: ${LETSENCRYPT_HOST}
-      VIRTUAL_HOST: ${VIRTUAL_HOST}
-      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
-      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+      MYSQL_HOST: db
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_HOST: db
+      REDIS_HOST: redis
+      REDIS_HOST_PASSWORD: ${REDIS_PASSWORD}
+    depends_on:
+      - db
+      - redis
+  
+  web:
+    build: ./docker/web
+    restart: always
+    volumes:
+      - ${LOCAL_DATA_DIR}:/var/www/html:ro
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+    depends_on:
+      - app
     networks:
       - default
       - webproxy
+
+  cron:
+    image: nextcloud:fpm-alpine
+    restart: always
+    volumes:
+      - ${LOCAL_DATA_DIR}:/var/www/html
+    entrypoint: /cron.sh
+    depends_on:
+      - db
+      - redis
 
 networks:
   webproxy:

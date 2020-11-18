@@ -2,9 +2,13 @@
 
 https://github.com/nextcloud/docker
 
-# docker-compose.yml example
+# bootstrap
 
-https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/with-nginx-proxy/mariadb/apache/docker-compose.yml
+```
+cp db.env.sample db.env
+cp .env.sample .env
+make
+```
 
 # occ
 
@@ -31,12 +35,13 @@ chown -R www-data:root data/cloud
 
 https://docs.nextcloud.com/server/13/admin_manual/configuration_files/big_file_upload_configuration.html
 
-add lines to cond.d/uploadsize.conf
+# Reset locked state
 
 ```
-fastcgi_request_buffering off;
-proxy_read_timeout 3600;
-proxy_send_timeout 3600;
-fastcgi_read_timeout 3600;
-fastcgi_send_timeout 3600;
+./occ maintenance:mode --on
+dc exec db bash
+mysql -u root -p
+use cloud_db
+delete from oc_file_locks where 1;
+./occ maintenance:mode --off
 ```
