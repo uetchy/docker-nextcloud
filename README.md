@@ -13,7 +13,7 @@ make
 # occ
 
 ```
-docker-compose exec --user www-data cloud-app php occ
+./occ
 ```
 
 # CSRF check failed issue
@@ -21,14 +21,14 @@ docker-compose exec --user www-data cloud-app php occ
 Add this lines to `config/config.php`:
 
 ```
-'overwrite.cli.url' => 'https://cloud.uechi.io',
+'overwrite.cli.url' => 'https://<domain>',
 'overwriteprotocol' => 'https',
 ```
 
 # Fix permissions
 
 ```
-chown -R www-data:root data/cloud
+chown -R www-data:root data/app
 ```
 
 # Large files
