@@ -1,5 +1,5 @@
 start:
-	docker-compose up -d --build
+	docker-compose up -d
 
 stop:
 	docker-compose down
@@ -7,5 +7,8 @@ stop:
 pull:
 	docker-compose pull
 
+build:
+	docker-compose build --pull
+
 restart: stop start
-update: stop pull start
+update: stop pull build start
