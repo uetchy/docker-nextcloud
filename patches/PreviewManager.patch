@@ -1,0 +1,12 @@
+--- data/app/lib/private/PreviewManager.php	2020-12-20 22:20:58.107807492 +0900
++++ ./PreviewManager.php	2020-12-20 22:20:53.947807540 +0900
+@@ -364,6 +364,9 @@
+ 		$this->registerCoreProvider(Preview\MP3::class, '/audio\/mpeg/');
+ 		$this->registerCoreProvider(Preview\OpenDocument::class, '/application\/vnd.oasis.opendocument.*/');
+ 
++		// NOTE: uetchy
++		$this->registerCoreProvider(Preview\PDF::class, '/application\/pdf/');
++
+ 		// SVG, Office and Bitmap require imagick
+ 		if (extension_loaded('imagick')) {
+ 			$checkImagick = new \Imagick();

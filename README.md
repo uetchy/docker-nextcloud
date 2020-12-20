@@ -45,3 +45,12 @@ use cloud_db
 delete from oc_file_locks where 1;
 ./occ maintenance:mode --off
 ```
+
+# Monkeypatch
+
+Add thumbnail generation capability for PDF.
+
+```
+patch data/app/lib/prviate/Preview/PDF.php < patches/PDF.patch
+patch data/app/lib/prviate/PreviewManager.php < patches/PreviewManager.patch
+```
