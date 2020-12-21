@@ -1,6 +1,6 @@
 # nextcloud/docker
 
-https://github.com/nextcloud/docker
+Based on https://github.com/nextcloud/docker.
 
 # bootstrap
 
@@ -51,6 +51,5 @@ delete from oc_file_locks where 1;
 Add thumbnail generation capability for PDF.
 
 ```
-patch data/app/lib/prviate/Preview/PDF.php < patches/PDF.patch
-patch data/app/lib/prviate/PreviewManager.php < patches/PreviewManager.patch
+./patches/apply_patch.sh
 ```
