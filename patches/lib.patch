@@ -1,0 +1,166 @@
+--- /usr/src/nextcloud/lib/composer/composer/autoload_classmap.php
++++ ./composer/composer/autoload_classmap.php
+@@ -1196,6 +1196,7 @@
+     'OC\\OCS\\Result' => $baseDir . '/lib/private/OCS/Result.php',
+     'OC\\PreviewManager' => $baseDir . '/lib/private/PreviewManager.php',
+     'OC\\PreviewNotAvailableException' => $baseDir . '/lib/private/PreviewNotAvailableException.php',
++    'OC\\Preview\\Affinity' => $baseDir . '/lib/private/Preview/Affinity.php',
+     'OC\\Preview\\BMP' => $baseDir . '/lib/private/Preview/BMP.php',
+     'OC\\Preview\\BackgroundCleanupJob' => $baseDir . '/lib/private/Preview/BackgroundCleanupJob.php',
+     'OC\\Preview\\Bitmap' => $baseDir . '/lib/private/Preview/Bitmap.php',
+--- /usr/src/nextcloud/lib/composer/composer/autoload_static.php
++++ ./composer/composer/autoload_static.php
+@@ -1225,6 +1225,7 @@
+         'OC\\OCS\\Result' => __DIR__ . '/../../..' . '/lib/private/OCS/Result.php',
+         'OC\\PreviewManager' => __DIR__ . '/../../..' . '/lib/private/PreviewManager.php',
+         'OC\\PreviewNotAvailableException' => __DIR__ . '/../../..' . '/lib/private/PreviewNotAvailableException.php',
++        'OC\\Preview\\Affinity' => __DIR__ . '/../../..' . '/lib/private/Preview/Affinity.php',
+         'OC\\Preview\\BMP' => __DIR__ . '/../../..' . '/lib/private/Preview/BMP.php',
+         'OC\\Preview\\BackgroundCleanupJob' => __DIR__ . '/../../..' . '/lib/private/Preview/BackgroundCleanupJob.php',
+         'OC\\Preview\\Bitmap' => __DIR__ . '/../../..' . '/lib/private/Preview/Bitmap.php',
+--- /dev/null
++++ ./private/Preview/Affinity.php
+@@ -0,0 +1,57 @@
++<?php
++/**
++ * @author Yasuaki Uechi <y@uechi.io>
++ * @license AGPL-3.0
++ *
++ * This code is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU Affero General Public License, version 3,
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU Affero General Public License for more details.
++ *
++ * You should have received a copy of the GNU Affero General Public License, version 3,
++ * along with this program. If not, see <http://www.gnu.org/licenses/>
++ *
++ */
++
++namespace OC\Preview;
++
++use OCP\Files\File;
++use OCP\IImage;
++use OCP\ILogger;
++
++// .afphoto, .afdesign
++class Affinity extends ProviderV2 {
++	/**
++	 * {@inheritDoc}
++	 */
++	public function getMimeType(): string {
++		return '/application\/x-affinity-(?:photo|design)/';
++	}
++
++	/**
++	 * {@inheritDoc}
++	 */
++	public function getThumbnail(File $file, int $maxX, int $maxY): ?IImage {
++		$tmpPath = $this->getLocalFile($file);
++
++		$handle = fopen($tmpPath, 'rb');
++		$fsize = filesize($tmpPath);
++		$contents = fread($handle, $fsize);
++		$start = strrpos($contents, "\x89PNG");
++		$end = strrpos($contents, "IEND", $start);
++		$subarr = substr($contents, $start, $end - $start + 8 );
++
++		fclose($handle);
++		$this->cleanTmpFiles();
++		
++		$image = new \OC_Image();
++		$image->loadFromData($subarr);
++		$image->scaleDownToFit($maxX, $maxY);
++
++		return $image->valid() ? $image : null;
++	}
++}
+--- /usr/src/nextcloud/lib/private/Preview/PDF.php
++++ ./private/Preview/PDF.php
+@@ -5,7 +5,8 @@
+  * @author Joas Schilling <coding@schilljs.com>
+  * @author Morris Jobke <hey@morrisjobke.de>
+  * @author Robin Appelman <robin@icewind.nl>
+- *
++ * @author Yasuaki Uechi <y@uechi.io>
++ * 
+  * @license AGPL-3.0
+  *
+  * This code is free software: you can redistribute it and/or modify
+@@ -24,12 +25,37 @@
+ 
+ namespace OC\Preview;
+ 
++use OCP\Files\File;
++use OCP\IImage;
++
+ //.pdf
+-class PDF extends Bitmap {
++class PDF extends ProviderV2 {
+ 	/**
+ 	 * {@inheritDoc}
+ 	 */
+ 	public function getMimeType(): string {
+ 		return '/application\/pdf/';
++	}
++
++	/**
++	 * {@inheritDoc}
++	 */
++	public function getThumbnail(File $file, int $maxX, int $maxY): ?IImage {
++		$tmpPath = $this->getLocalFile($file);
++		$outputPath = \OC::$server->getTempManager()->getTemporaryFile();
++
++		$gsBin = \OC_Helper::findBinaryPath('gs');
++		$cmd = $gsBin . " -o " . escapeshellarg($outputPath) . " -sDEVICE=pngalpha -dLastPage=1 " . escapeshellarg($tmpPath);
++		shell_exec($cmd);
++
++		$this->cleanTmpFiles();
++
++		$image = new \OC_Image();
++		$image->loadFromFile($outputPath);
++		$image->scaleDownToFit($maxX, $maxY);
++
++		unlink($outputPath);
++
++		return $image->valid() ? $image : null;
+ 	}
+ }
+--- /usr/src/nextcloud/lib/private/PreviewManager.php
++++ ./private/PreviewManager.php
+@@ -12,6 +12,7 @@
+  * @author Roeland Jago Douma <roeland@famdouma.nl>
+  * @author Sebastian Steinmetz <462714+steiny2k@users.noreply.github.com>
+  * @author Thomas Müller <thomas.mueller@tmit.eu>
++ * @author Yasuaki Uechi <y@uechi.io>
+  *
+  * @license AGPL-3.0
+  *
+@@ -216,6 +217,7 @@
+ 			return false;
+ 		}
+ 
++
+ 		if (isset($this->mimeTypeSupportMap[$mimeType])) {
+ 			return $this->mimeTypeSupportMap[$mimeType];
+ 		}
+@@ -363,6 +365,8 @@
+ 		$this->registerCoreProvider(Preview\Krita::class, '/application\/x-krita/');
+ 		$this->registerCoreProvider(Preview\MP3::class, '/audio\/mpeg/');
+ 		$this->registerCoreProvider(Preview\OpenDocument::class, '/application\/vnd.oasis.opendocument.*/');
++		$this->registerCoreProvider(Preview\PDF::class, '/application\/pdf/');
++		$this->registerCoreProvider(Preview\Affinity::class, '/application\/x-affinity-(?:photo|design)/');
+ 
+ 		// SVG, Office and Bitmap require imagick
+ 		if (extension_loaded('imagick')) {
+@@ -391,6 +395,7 @@
+ 			}
+ 
+ 			if (count($checkImagick->queryFormats('PDF')) === 1) {
++
+ 				if (\OC_Helper::is_function_enabled('shell_exec')) {
+ 					$officeFound = is_string($this->config->getSystemValue('preview_libreoffice_path', null));
+ 

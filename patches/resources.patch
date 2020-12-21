@@ -1,0 +1,11 @@
+--- /usr/src/nextcloud/resources/config/mimetypemapping.dist.json
++++ ./config/mimetypemapping.dist.json
+@@ -11,6 +11,8 @@
+ 	"7z": ["application/x-7z-compressed"],
+ 	"accdb": ["application/msaccess"],
+ 	"ai": ["application/illustrator"],
++	"afphoto": ["application/x-affinity-photo"],
++	"afdesign": ["application/x-affinity-design"],
+ 	"apk": ["application/vnd.android.package-archive"],
+ 	"arw": ["image/x-dcraw"],
+ 	"avi": ["video/x-msvideo"],
