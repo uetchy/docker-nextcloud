@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   db:
@@ -37,7 +37,7 @@ services:
     depends_on:
       - db
       - redis
-  
+
   web:
     build: ./docker/web
     restart: always
@@ -49,10 +49,7 @@ services:
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     depends_on:
       - app
-    networks:
-      - default
-      - webproxy
-    
+
   cron:
     image: nextcloud:fpm-alpine
     restart: always
@@ -65,6 +62,6 @@ services:
       - redis
 
 networks:
-  webproxy:
+  default:
     external:
       name: ${NETWORK:-webproxy}
