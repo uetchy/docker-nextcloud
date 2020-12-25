@@ -91,5 +91,5 @@ Additional thumbnail generation capability.
 
 ```bash
 # after installation
-./patches/apply_patch.sh
+./patches/apply.sh
 ```

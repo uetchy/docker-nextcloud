@@ -52,12 +52,7 @@ services:
     networks:
       - default
       - webproxy
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
-
+    
   cron:
     image: nextcloud:fpm-alpine
     restart: always
