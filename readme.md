@@ -2,7 +2,9 @@
 
 Based on https://github.com/nextcloud/docker.
 
-# bootstrap
+# setup
+
+## installation
 
 ```
 cp db.env.sample db.env
@@ -10,13 +12,28 @@ cp .env.sample .env
 make
 ```
 
-# occ
+## monkeypatch
+
+Adds thumbnail generation capability for:
+
+- PDF `.pdf`
+- Affinity Photo `.afphoto`
+- Affinity Design `.afdesign`
+
+```bash
+# after installation
+./patches/apply.sh
+```
+
+# configuration
+
+## occ
 
 ```
 ./occ
 ```
 
-# Tweak PHP
+## Tweak PHP
 
 ```
 /usr/local/etc/php
@@ -51,7 +68,7 @@ post_max_size=10G
 memory_limit=20G
 ```
 
-# CSRF check failed issue
+## CSRF check failed issue
 
 Add this lines to `config/config.php`:
 
@@ -60,17 +77,17 @@ Add this lines to `config/config.php`:
 'overwriteprotocol' => 'https',
 ```
 
-# Fix permissions
+## Fix permissions
 
 ```
 chown -R www-data:root data/app
 ```
 
-# Large files
+## Large files
 
 https://docs.nextcloud.com/server/13/admin_manual/configuration_files/big_file_upload_configuration.html
 
-# Reset locked state
+## Reset locked state
 
 ```
 ./occ maintenance:mode --on
@@ -79,17 +96,4 @@ mysql -u root -p
 use cloud_db
 delete from oc_file_locks where 1;
 ./occ maintenance:mode --off
-```
-
-# Monkeypatch
-
-Additional thumbnail generation capability.
-
-- PDF
-- Affinity Photo
-- Affinity Design
-
-```bash
-# after installation
-./patches/apply.sh
 ```

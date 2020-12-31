@@ -1,5 +1,4 @@
 data/
 .env
-db.env
 .vscode
 /tmp
