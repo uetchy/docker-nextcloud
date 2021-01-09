@@ -1,5 +1,5 @@
 start:
-	docker-compose up -d
+	docker-compose up -d --force
 
 stop:
 	docker-compose down
@@ -14,4 +14,4 @@ logs:
 	docker-compose logs -f --tail=100 app
 
 restart: stop start
-update: stop pull build start
+update: build pull start

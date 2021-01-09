@@ -1,4 +1,4 @@
 #!/bin/sh
 
-patch -d ./data/app/lib -ruN -p0 < patches/lib.patch
-patch -d ./data/app/resources -ruN -p0 < patches/resources.patch
+patch -ruN -p0 -d ./data/app/lib < patches/lib.patch
+patch -ruN -p0 -d ./data/app/resources < patches/resources.patch

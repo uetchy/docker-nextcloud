@@ -1,4 +1,4 @@
---- /usr/src/nextcloud/resources/config/mimetypemapping.dist.json
+lg--- /usr/src/nextcloud/resources/config/mimetypemapping.dist.json
 +++ ./config/mimetypemapping.dist.json
 @@ -11,6 +11,8 @@
  	"7z": ["application/x-7z-compressed"],

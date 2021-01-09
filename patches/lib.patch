@@ -115,7 +115,7 @@
 +		$outputPath = \OC::$server->getTempManager()->getTemporaryFile();
 +
 +		$gsBin = \OC_Helper::findBinaryPath('gs');
-+		$cmd = $gsBin . " -o " . escapeshellarg($outputPath) . " -sDEVICE=pngalpha -dLastPage=1 " . escapeshellarg($tmpPath);
++		$cmd = $gsBin . " -o " . escapeshellarg($outputPath) . " -sDEVICE=jpeg -sPAPERSIZE=a4 -dLastPage=1 -dPDFFitPage -dJPEGQ=90 -r144 " . escapeshellarg($tmpPath);
 +		shell_exec($cmd);
 +
 +		$this->cleanTmpFiles();
