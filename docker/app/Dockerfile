@@ -10,7 +10,7 @@ COPY fpm.conf /usr/local/etc/php-fpm.d/zz-pm.conf
 
 # HEIC support
 # https://eplt.medium.com/5-minutes-to-install-imagemagick-with-heic-support-on-ubuntu-18-04-digitalocean-fe2d09dcef1
-RUN apk add --no-cache git build-base autoconf automake libtool libjpeg-turbo-dev
+RUN apk add --no-cache git build-base autoconf automake libtool libjpeg-turbo-dev libpng-dev libxml2-dev opencl-headers
 
 RUN git clone https://github.com/strukturag/libde265.git /usr/src/libde265
 RUN git clone https://github.com/strukturag/libheif.git /usr/src/libheif
@@ -29,7 +29,8 @@ RUN make -j`nproc`
 RUN make install
 
 WORKDIR /usr/src/imagemagick
-RUN ./configure --with-heic=yes --with-jpeg=true
+RUN git checkout 7.0.10-56
+RUN ./configure
 RUN make -j`nproc`
 RUN make install
 
