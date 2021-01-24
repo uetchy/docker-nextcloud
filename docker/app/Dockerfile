@@ -37,3 +37,10 @@ RUN make install
 WORKDIR /var/www/html
 
 RUN rm -rf /usr/src/libde265 /usr/src/libheif /usr/src/imagemagick
+
+# change uid/gid
+RUN apk --no-cache add shadow
+ARG PUID=82
+ARG PGID=82
+RUN usermod -u $PUID www-data
+RUN groupmod -g $PGID www-data
