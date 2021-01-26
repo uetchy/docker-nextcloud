@@ -44,7 +44,11 @@ services:
       - redis
 
   cron:
-    build: ./docker/app
+    build:
+      context: ./docker/app
+      args:
+        PUID: ${NEXTCLOUD_UID}
+        PGID: ${NEXTCLOUD_GID}
     restart: unless-stopped
     volumes:
       - ${LOCAL_APP_DIR}:/var/www/html

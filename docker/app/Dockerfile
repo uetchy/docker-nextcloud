@@ -1,12 +1,9 @@
 FROM nextcloud:fpm-alpine
 
-# PDF and Movie support
+# movies and PDF support
 RUN apk add --no-cache \
   ffmpeg \
   ghostscript
-
-# optimize PHP-FPM
-COPY fpm.conf /usr/local/etc/php-fpm.d/zz-pm.conf
 
 # HEIC support
 # https://eplt.medium.com/5-minutes-to-install-imagemagick-with-heic-support-on-ubuntu-18-04-digitalocean-fe2d09dcef1
@@ -38,8 +35,15 @@ WORKDIR /var/www/html
 
 RUN rm -rf /usr/src/libde265 /usr/src/libheif /usr/src/imagemagick
 
-# change uid/gid
 RUN apk --no-cache add shadow
+
+# optimize PHP
+COPY php.ini /usr/local/etc/php/conf.d/zz-custom.ini
+
+# optimize PHP-FPM
+COPY fpm.conf /usr/local/etc/php-fpm.d/zz-custom.conf
+
+# change uid/gid
 ARG PUID=82
 ARG PGID=82
 RUN usermod -u $PUID www-data

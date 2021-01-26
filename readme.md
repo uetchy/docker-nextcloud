@@ -48,10 +48,6 @@ tail -f <data_dir>/nextcloud.log | jq .
 
 php -r 'phpinfo();'
 php-fpm -i
-
-upload_max_filesize=10G
-post_max_size=10G
-memory_limit=20G
 ```
 
 ## CSRF check failed issue
