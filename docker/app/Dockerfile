@@ -1,5 +1,12 @@
 FROM nextcloud:fpm-alpine
 
+# change uid/gid
+RUN apk --no-cache add shadow
+ARG PUID=82
+ARG PGID=82
+RUN usermod -u $PUID www-data
+RUN groupmod -g $PGID www-data
+
 # movies and PDF support
 RUN apk add --no-cache \
   ffmpeg \
@@ -35,16 +42,8 @@ WORKDIR /var/www/html
 
 RUN rm -rf /usr/src/libde265 /usr/src/libheif /usr/src/imagemagick
 
-RUN apk --no-cache add shadow
-
 # optimize PHP
 COPY php.ini /usr/local/etc/php/conf.d/zz-custom.ini
 
 # optimize PHP-FPM
 COPY fpm.conf /usr/local/etc/php-fpm.d/zz-custom.conf
-
-# change uid/gid
-ARG PUID=82
-ARG PGID=82
-RUN usermod -u $PUID www-data
-RUN groupmod -g $PGID www-data

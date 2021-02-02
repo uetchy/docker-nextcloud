@@ -1,14 +1,20 @@
 # nextcloud/docker
 
-Based on https://github.com/nextcloud/docker.
+Based on https://github.com/nextcloud/docker, plus:
+
+- support for nginx-proxy + let's encrypt companion stack
+- build-time uid/gid conversion
+- optimal for a server with large memory and performant cpus
+- thumbnail generation for PDF, Affinity Photo, and Affinity Design
+- built-in collabora server (https://<domain>/collabora)
 
 # setup
 
 ## installation
 
 ```
-cp db.env.sample db.env
 cp .env.sample .env
+vim .env
 make
 ```
 
@@ -59,23 +65,19 @@ Add this lines to `config/config.php`:
 'overwriteprotocol' => 'https',
 ```
 
-## Fix permissions
-
-```
-chown -R www-data:root data/app
-```
-
-## Large files
-
-https://docs.nextcloud.com/server/13/admin_manual/configuration_files/big_file_upload_configuration.html
-
 ## Reset locked state
 
 ```
 ./occ maintenance:mode --on
-dc exec db bash
+docker-compose exec db bash
+```
+
+```
 mysql -u root -p
 use cloud_db
 delete from oc_file_locks where 1;
+```
+
+```
 ./occ maintenance:mode --off
 ```
