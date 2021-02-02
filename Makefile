@@ -14,6 +14,9 @@ pull:
 build:
 	docker-compose build --pull
 
+applypatches:
+	bash ./patches/apply.sh
+
 logs:
 	docker-compose logs -f --tail=100 app
 

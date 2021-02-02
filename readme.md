@@ -1,22 +1,37 @@
-# nextcloud/docker
+# Docker Nextcloud
 
-Based on https://github.com/nextcloud/docker, plus:
+Based on [evertramos/docker-nextcloud-letsencrypt](https://github.com/evertramos/docker-nextcloud-letsencrypt), plus:
 
-- support for nginx-proxy + let's encrypt companion stack
 - build-time uid/gid conversion
-- optimal for a server with large memory and performant cpus
 - thumbnail generation for PDF, Affinity Photo, and Affinity Design
 - built-in collabora server (https://<domain>/collabora)
+- performance improvements
 
-# setup
+# usage
 
 ## installation
 
-```
+```bash
 cp .env.sample .env
-vim .env
-make
+vim .env # fill the blank variables
+make # pull, build, start
+make applypatches # run only once
 ```
+
+## logging
+
+```
+docker-compose logs -f app
+tail -f <data_dir>/nextcloud.log | jq .
+```
+
+## occ
+
+```
+./occ
+```
+
+# configuration
 
 ## monkeypatch
 
@@ -31,19 +46,13 @@ Adds thumbnail generation capability for:
 ./patches/apply.sh
 ```
 
-# configuration
-
-## occ
-
-```
-./occ
-```
-
-## logging
-
-```
-docker-compose logs -f app
-tail -f <data_dir>/nextcloud.log | jq .
+```php config.php
+'enabledPreviewProviders' =>
+  array (
+    1 => 'OC\\Preview\\PDF',
+    2 => 'OC\\Preview\\Affinity',
+    ...
+  ),
 ```
 
 ## Tweak PHP
