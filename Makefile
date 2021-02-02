@@ -1,8 +1,9 @@
 update: build pull start
+
 restart: stop start
 
 start:
-	docker-compose up -d --force
+	docker-compose up -d
 
 stop:
 	docker-compose down
