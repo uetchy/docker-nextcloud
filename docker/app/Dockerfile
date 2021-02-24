@@ -1,4 +1,4 @@
-FROM nextcloud:fpm-alpine
+FROM nextcloud:21-fpm-alpine
 
 # change uid/gid
 RUN apk --no-cache add shadow
@@ -41,6 +41,9 @@ RUN make install
 WORKDIR /var/www/html
 
 RUN rm -rf /usr/src/libde265 /usr/src/libheif /usr/src/imagemagick
+
+# Additonal fonts
+#COPY fonts/SourceHanSans.ttc /usr/share/fonts/
 
 # optimize PHP
 COPY php.ini /usr/local/etc/php/conf.d/zz-custom.ini
