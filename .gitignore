@@ -1,4 +1,5 @@
 data/
+.envrc
 .env
 .vscode
 /tmp

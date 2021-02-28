@@ -1,0 +1,13 @@
+--- /usr/src/nextcloud/core/templates/layout.user.php
++++ ./templates/layout.user.php
+@@ -19,8 +19,8 @@
+ 		<meta name="mobile-web-app-capable" content="yes">
+ 		<meta name="theme-color" content="<?php p($theme->getColorPrimary()); ?>">
+ 		<link rel="icon" href="<?php print_unescaped(image_path($_['appid'], 'favicon.ico')); /* IE11+ supports png */ ?>">
+-		<link rel="apple-touch-icon" href="<?php print_unescaped(image_path($_['appid'], 'favicon-touch.png')); ?>">
+-		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path($_['appid'], 'favicon-touch.png')); ?>">
++		<link rel="apple-touch-icon" href="<?php print_unescaped(image_path($_['appid'], 'favicon.ico')); ?>">
++		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path($_['appid'], 'favicon.ico')); ?>">
+ 		<link rel="mask-icon" sizes="any" href="<?php print_unescaped(image_path($_['appid'], 'favicon-mask.svg')); ?>" color="<?php p($theme->getColorPrimary()); ?>">
+ 		<link rel="manifest" href="<?php print_unescaped(image_path($_['appid'], 'manifest.json')); ?>">
+ 		<?php emit_css_loading_tags($_); ?>
