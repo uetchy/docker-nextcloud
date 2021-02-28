@@ -19,11 +19,13 @@ services:
     restart: unless-stopped
 
   app:
+    image: uetchy/nextcloud
     build:
       context: ./docker/app
       args:
         PUID: ${NEXTCLOUD_UID}
         PGID: ${NEXTCLOUD_GID}
+        NEXTCLOUD_MAJOR_VERSION: ${NEXTCLOUD_MAJOR_VERSION:-21}
     restart: unless-stopped
     volumes:
       - ${LOCAL_APP_DIR}:/var/www/html
@@ -44,17 +46,14 @@ services:
       - redis
 
   cron:
-    build:
-      context: ./docker/app
-      args:
-        PUID: ${NEXTCLOUD_UID}
-        PGID: ${NEXTCLOUD_GID}
+    image: uetchy/nextcloud
     restart: unless-stopped
     volumes:
       - ${LOCAL_APP_DIR}:/var/www/html
       - ${LOCAL_DATA_DIR}:/var/www/html/data
     entrypoint: /cron.sh
     depends_on:
+      - app
       - db
       - redis
 
@@ -66,9 +65,6 @@ services:
     environment:
       - "domain=${VIRTUAL_HOST}"
       - "dictionaries=en_US en_GB ja"
-
-  # onlyoffice:
-  #   image: onlyoffice/documentserver:latest
 
   web:
     build: ./docker/web

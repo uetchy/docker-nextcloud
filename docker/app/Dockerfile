@@ -1,4 +1,5 @@
-FROM nextcloud:21-fpm-alpine
+ARG NEXTCLOUD_MAJOR_VERSION
+FROM nextcloud:${NEXTCLOUD_MAJOR_VERSION}-fpm-alpine
 
 # change uid/gid
 RUN apk --no-cache add shadow

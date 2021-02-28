@@ -1,11 +1,9 @@
 # Docker Nextcloud
 
-Based on [evertramos/docker-nextcloud-letsencrypt](https://github.com/evertramos/docker-nextcloud-letsencrypt), plus:
-
 - build-time uid/gid conversion
 - thumbnail generation for PDF, Affinity Photo, and Affinity Design
 - built-in collabora server (https://<domain>/collabora)
-- performance improvements
+- performance tweak
 
 # usage
 
@@ -76,17 +74,20 @@ Add this lines to `config/config.php`:
 
 ## Reset locked state
 
-```
+```bash
 ./occ maintenance:mode --on
-docker-compose exec db bash
+docker-compose exec db mysql -u root -p
 ```
 
 ```
-mysql -u root -p
 use cloud_db
 delete from oc_file_locks where 1;
 ```
 
-```
+```bash
 ./occ maintenance:mode --off
 ```
+
+## license
+
+based on [evertramos/docker-nextcloud-letsencrypt](https://github.com/evertramos/docker-nextcloud-letsencrypt)
