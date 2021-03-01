@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
 
   app:
-    image: uetchy/nextcloud
+    image: nextcloud
     build:
       context: ./docker/app
       args:
@@ -46,7 +46,7 @@ services:
       - redis
 
   cron:
-    image: uetchy/nextcloud
+    image: nextcloud
     restart: unless-stopped
     volumes:
       - ${LOCAL_APP_DIR}:/var/www/html
