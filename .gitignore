@@ -1,4 +1,5 @@
 data/
+data-bkup-*
 .envrc
 .env
 .vscode

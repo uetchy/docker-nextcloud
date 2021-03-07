@@ -1,4 +1,4 @@
-version: "3"
+version: "3.2"
 
 services:
   db:
@@ -18,14 +18,25 @@ services:
     command: redis-server --requirepass ${REDIS_PASSWORD}
     restart: unless-stopped
 
+  web:
+    build: ./docker/web
+    restart: unless-stopped
+    volumes:
+      - ${LOCAL_APP_DIR}:/var/www/html:ro
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+    depends_on:
+      - app
+
   app:
-    image: nextcloud
     build:
       context: ./docker/app
       args:
         PUID: ${NEXTCLOUD_UID}
         PGID: ${NEXTCLOUD_GID}
-        NEXTCLOUD_MAJOR_VERSION: ${NEXTCLOUD_MAJOR_VERSION:-21}
+        NEXTCLOUD_MAJOR_VERSION: ${NEXTCLOUD_MAJOR_VERSION:-stable}
     restart: unless-stopped
     volumes:
       - ${LOCAL_APP_DIR}:/var/www/html
@@ -34,7 +45,7 @@ services:
     environment:
       NEXTCLOUD_ADMIN_USER: ${NEXTCLOUD_ADMIN_USER}
       NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}
-      NEXTCLOUD_TRUSTED_DOMAINS: ${LETSENCRYPT_HOST}
+      NEXTCLOUD_TRUSTED_DOMAINS: ${VIRTUAL_HOST}
       MYSQL_HOST: db
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -46,7 +57,12 @@ services:
       - redis
 
   cron:
-    image: nextcloud
+    build:
+      context: ./docker/app
+      args:
+        PUID: ${NEXTCLOUD_UID}
+        PGID: ${NEXTCLOUD_GID}
+        NEXTCLOUD_MAJOR_VERSION: ${NEXTCLOUD_MAJOR_VERSION:-stable}
     restart: unless-stopped
     volumes:
       - ${LOCAL_APP_DIR}:/var/www/html
@@ -65,18 +81,6 @@ services:
     environment:
       - "domain=${VIRTUAL_HOST}"
       - "dictionaries=en_US en_GB ja"
-
-  web:
-    build: ./docker/web
-    restart: unless-stopped
-    volumes:
-      - ${LOCAL_APP_DIR}:/var/www/html:ro
-    environment:
-      VIRTUAL_HOST: ${VIRTUAL_HOST}
-      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
-      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
-    depends_on:
-      - app
 
 networks:
   default:

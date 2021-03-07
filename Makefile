@@ -1,6 +1,9 @@
-update: build pull start
+update: build pull backup start
 
 restart: stop start
+
+backup:
+	cp -rp data data-bkup-$(date +%s)
 
 start:
 	docker-compose up -d
