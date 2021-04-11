@@ -1,3 +1,22 @@
+--- /usr/src/nextcloud/core/signature.json
++++ ./signature.json
+@@ -8534,6 +8534,7 @@
+         "lib\/private\/OCS\/Exception.php": "fe228677f6c7c9a0c1a096d021fbf0b86c737af606801709e5003028de47b92df6c961d0f542afe26e68e80a7db888a1a69c5583c95c68e14d4556b097dcdb83",
+         "lib\/private\/OCS\/Provider.php": "2fb7e516b6712cdcd93161371f0494cf2db5fd8ea6fad7ae742b97a0fb59f44462ea36d716ac69d707ca4f8a642e1808f9bc0ca86f448e624eeb2b06b29216e8",
+         "lib\/private\/OCS\/Result.php": "f07b5aec5b374376fd528223d9d3a076196f967e695954e499a051a2737306176b3c674ad69dc7ac87c0e3791469828770ee2f8281335d320b15c653d26fd1de",
++        "lib\/private\/Preview\/Affinity.php": "951491b1e6a65d92e5386386c4bc5163d74a6b13d76a376f1ad713d96534bb23fcdd9761e80adf0c5680a6b83394c04a1ab7bcbaa3018812d39726b87618334c",
+         "lib\/private\/Preview\/BMP.php": "3882b5c340f5345489b79a27eeb733ca4600bbc120dc9ddc4f926e2de89c7e215ec4287dc7c51d74bea91189d1334d3369b7657d6fca5f5284e931da3c036e97",
+         "lib\/private\/Preview\/BackgroundCleanupJob.php": "fd88a3b24d52a4b395365544bf8f037bcdcab014b4980595c3165b1af666ec349e7eede0d99a9d97af050fa47d05a694ecf1619c795a144856df33b346876e5e",
+         "lib\/private\/Preview\/Bitmap.php": "b7ccebcc25d737e7b8e57826ae45f393f72def9e9133e6c5013789f08e1b2058fac35df423b705bec382c329eda3ed245b2570021f2c5dd0a16ff57ef480adb0",
+@@ -8555,7 +8556,7 @@
+         "lib\/private\/Preview\/Movie.php": "0e8270a815f8ca035e0efdf96f0b0189090eec46d6121c8780f8aadf03b572875b4a8bbdd6149ee6b16b75bd8e9564a7af2c59a43ea9c334bc50867f1ed9dae2",
+         "lib\/private\/Preview\/Office.php": "98bb0544c8505931b047515500383095658aec9ad0aa95ea072ddc341b8fb9500c0b62cd96cd1729f585d152811f0cd4222dd846b3ed434c951363db23a89d9d",
+         "lib\/private\/Preview\/OpenDocument.php": "dff27fd2d833d02df73e73fb82c0351ac47d0c98b5037fa89bc4e3abaa601d687e1dc66432ed5744ab5aa0133023459a4c6989ca7db7dea333749d26a3fa7c10",
+-        "lib\/private\/Preview\/PDF.php": "c8261e9b75b12d3eaba7dab2288dc15884043cd36100d06d5812732b487e1735f37650c76724801ac75db6c73e7b15d6285d8b85ac8c7165a90e703bffc63789",
++        "lib\/private\/Preview\/PDF.php": "9ed563d4e7b5de54cb5a8b3f88e68ea19c029037da07669b68b8c5645e5d290b76b347a0937dea5554569806211e92a945081be30ce01ae47618b741361dbdca",
+         "lib\/private\/Preview\/PNG.php": "c253da75b9d2a76e4171b72e636c4b741a2fd2525a15629b82db2987f57a057b6ddf0829665ec96e180d9b615f6109e94eadff6a5b2af9022e6d0993c484f0a8",
+         "lib\/private\/Preview\/Photoshop.php": "39c345020e205709359a340c931016e928ee98687db920c443392b11988f00a8372fb3bc3fa880cf746e7943498089b6f9bf027c78b31f7d656e7d7f4a9094b5",
+         "lib\/private\/Preview\/Postscript.php": "093cd5d9b34d96e13cc33cef119e2e80c94db3dec0744f8cbe81af0c46f9b5f801dcf7dec4bab1997c432b25eec1fb82aaa469bd4918233756dd20c000559dbb",
 --- /usr/src/nextcloud/core/templates/layout.user.php
 +++ ./templates/layout.user.php
 @@ -19,8 +19,8 @@
