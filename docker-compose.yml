@@ -3,7 +3,7 @@ version: "3.2"
 services:
   db:
     image: mariadb:10
-    restart: unless-stopped
+    restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
       - ${LOCAL_DB_DIR}:/var/lib/mysql
@@ -16,11 +16,11 @@ services:
   redis:
     image: redis:6-alpine
     command: redis-server --requirepass ${REDIS_PASSWORD}
-    restart: unless-stopped
+    restart: always
 
   web:
     build: ./docker/web
-    restart: unless-stopped
+    restart: always
     volumes:
       - ${LOCAL_APP_DIR}:/var/www/html:ro
     environment:
@@ -29,6 +29,7 @@ services:
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     depends_on:
       - app
+      - cron
 
   app:
     build:
@@ -37,7 +38,7 @@ services:
         PUID: ${NEXTCLOUD_UID}
         PGID: ${NEXTCLOUD_GID}
         NEXTCLOUD_MAJOR_VERSION: ${NEXTCLOUD_MAJOR_VERSION:-stable}
-    restart: unless-stopped
+    restart: always
     volumes:
       - ${LOCAL_APP_DIR}:/var/www/html
       - ${LOCAL_DATA_DIR}:/var/www/html/data
@@ -63,7 +64,7 @@ services:
         PUID: ${NEXTCLOUD_UID}
         PGID: ${NEXTCLOUD_GID}
         NEXTCLOUD_MAJOR_VERSION: ${NEXTCLOUD_MAJOR_VERSION:-stable}
-    restart: unless-stopped
+    restart: always
     volumes:
       - ${LOCAL_APP_DIR}:/var/www/html
       - ${LOCAL_DATA_DIR}:/var/www/html/data
@@ -75,7 +76,7 @@ services:
 
   collabora:
     image: collabora/code:latest
-    restart: unless-stopped
+    restart: always
     ports:
       - 9980
     environment:
