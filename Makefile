@@ -23,3 +23,6 @@ applypatches:
 logs:
 	docker-compose logs -f --tail=100 app
 
+fixweb:
+	docker-compose stop web
+	docker-compose start web

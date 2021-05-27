@@ -1,6 +1,6 @@
 --- /usr/src/nextcloud/core/signature.json
 +++ ./signature.json
-@@ -8534,6 +8534,7 @@
+@@ -8536,6 +8536,7 @@
          "lib\/private\/OCS\/Exception.php": "fe228677f6c7c9a0c1a096d021fbf0b86c737af606801709e5003028de47b92df6c961d0f542afe26e68e80a7db888a1a69c5583c95c68e14d4556b097dcdb83",
          "lib\/private\/OCS\/Provider.php": "2fb7e516b6712cdcd93161371f0494cf2db5fd8ea6fad7ae742b97a0fb59f44462ea36d716ac69d707ca4f8a642e1808f9bc0ca86f448e624eeb2b06b29216e8",
          "lib\/private\/OCS\/Result.php": "f07b5aec5b374376fd528223d9d3a076196f967e695954e499a051a2737306176b3c674ad69dc7ac87c0e3791469828770ee2f8281335d320b15c653d26fd1de",
@@ -8,7 +8,7 @@
          "lib\/private\/Preview\/BMP.php": "3882b5c340f5345489b79a27eeb733ca4600bbc120dc9ddc4f926e2de89c7e215ec4287dc7c51d74bea91189d1334d3369b7657d6fca5f5284e931da3c036e97",
          "lib\/private\/Preview\/BackgroundCleanupJob.php": "fd88a3b24d52a4b395365544bf8f037bcdcab014b4980595c3165b1af666ec349e7eede0d99a9d97af050fa47d05a694ecf1619c795a144856df33b346876e5e",
          "lib\/private\/Preview\/Bitmap.php": "b7ccebcc25d737e7b8e57826ae45f393f72def9e9133e6c5013789f08e1b2058fac35df423b705bec382c329eda3ed245b2570021f2c5dd0a16ff57ef480adb0",
-@@ -8555,7 +8556,7 @@
+@@ -8557,7 +8558,7 @@
          "lib\/private\/Preview\/Movie.php": "0e8270a815f8ca035e0efdf96f0b0189090eec46d6121c8780f8aadf03b572875b4a8bbdd6149ee6b16b75bd8e9564a7af2c59a43ea9c334bc50867f1ed9dae2",
          "lib\/private\/Preview\/Office.php": "98bb0544c8505931b047515500383095658aec9ad0aa95ea072ddc341b8fb9500c0b62cd96cd1729f585d152811f0cd4222dd846b3ed434c951363db23a89d9d",
          "lib\/private\/Preview\/OpenDocument.php": "dff27fd2d833d02df73e73fb82c0351ac47d0c98b5037fa89bc4e3abaa601d687e1dc66432ed5744ab5aa0133023459a4c6989ca7db7dea333749d26a3fa7c10",
