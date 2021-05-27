@@ -1,4 +1,5 @@
 data*
+*.dump
 .envrc
 .env
 .vscode

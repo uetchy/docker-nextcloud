@@ -4,6 +4,7 @@ restart: stop start
 
 backup:
 	cp -rp data data-backup-$$(date +%s)
+	docker-compose exec db mysqldump -u root --password=${MYSQL_ROOT_PASSWORD} nextcloud > nextcloud-$$(date +%s).dump
 
 start:
 	docker-compose up -d
