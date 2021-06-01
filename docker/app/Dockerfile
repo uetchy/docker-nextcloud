@@ -51,3 +51,6 @@ COPY php.ini /usr/local/etc/php/conf.d/zz-custom.ini
 
 # optimize PHP-FPM
 COPY fpm.conf /usr/local/etc/php-fpm.d/zz-custom.conf
+
+# for healthcheck
+RUN apk add --no-cache fcgi

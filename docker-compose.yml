@@ -30,6 +30,10 @@ services:
     depends_on:
       - app
       - cron
+    healthcheck:
+      test: "curl --fail -s http://localhost:80 || exit 1"
+      interval: 30s
+      timeout: 10s
 
   app:
     build:
@@ -56,8 +60,13 @@ services:
     depends_on:
       - db
       - redis
+    healthcheck:
+      test: "SCRIPT_NAME=/ping SCRIPT_FILENAME=/ping REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9000 || exit 1"
+      interval: 10s
+      timeout: 3s
 
   cron:
+    entrypoint: /cron.sh
     build:
       context: ./docker/app
       args:
@@ -68,7 +77,6 @@ services:
     volumes:
       - ${LOCAL_APP_DIR}:/var/www/html
       - ${LOCAL_DATA_DIR}:/var/www/html/data
-    entrypoint: /cron.sh
     depends_on:
       - app
       - db
