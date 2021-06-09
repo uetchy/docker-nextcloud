@@ -32,6 +32,9 @@ services:
         condition: service_started
       cron:
         condition: service_started
+    networks:
+      - default
+      - webproxy
     # healthcheck:
     #   test: "curl --fail -s http://localhost || exit 1"
     #   interval: 10s
@@ -94,6 +97,5 @@ services:
       - "dictionaries=en_US en_GB ja"
 
 networks:
-  default:
-    external:
-      name: ${NETWORK:-webproxy}
+  webproxy:
+    external: true
