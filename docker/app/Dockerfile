@@ -22,19 +22,22 @@ RUN git clone https://github.com/strukturag/libheif.git /usr/src/libheif
 RUN git clone https://github.com/ImageMagick/ImageMagick.git /usr/src/imagemagick
 
 WORKDIR /usr/src/libde265
+RUN git checkout v1.0.8
 RUN ./autogen.sh
 RUN ./configure
 RUN make -j`nproc`
 RUN make install
 
 WORKDIR /usr/src/libheif
+RUN git checkout v1.12.0
 RUN ./autogen.sh
 RUN ./configure
 RUN make -j`nproc`
 RUN make install
 
 WORKDIR /usr/src/imagemagick
-RUN git checkout 7.0.10-56
+# must be same as the version from `php -i | grep 'Imagick compiled'`
+RUN git checkout 7.0.11-13
 RUN ./configure
 RUN make -j`nproc`
 RUN make install
@@ -51,6 +54,3 @@ COPY php.ini /usr/local/etc/php/conf.d/zz-custom.ini
 
 # optimize PHP-FPM
 COPY fpm.conf /usr/local/etc/php-fpm.d/zz-custom.conf
-
-# for healthcheck
-RUN apk add --no-cache fcgi
