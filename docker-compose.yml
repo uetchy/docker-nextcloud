@@ -2,7 +2,9 @@ version: "3.2"
 
 services:
   db:
-    image: mariadb:10
+    # 10.6.2 would cause error
+    # InnoDB refuses to write tables with ROW_FORMAT=COMPRESSED or KEY_BLOCK_SIZE.
+    image: mariadb:10.5.10
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:

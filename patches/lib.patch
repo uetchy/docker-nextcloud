@@ -1,6 +1,6 @@
 --- /usr/src/nextcloud/lib/composer/composer/autoload_classmap.php
 +++ ./composer/composer/autoload_classmap.php
-@@ -1236,6 +1236,7 @@
+@@ -1237,6 +1237,7 @@
      'OC\\OCS\\Result' => $baseDir . '/lib/private/OCS/Result.php',
      'OC\\PreviewManager' => $baseDir . '/lib/private/PreviewManager.php',
      'OC\\PreviewNotAvailableException' => $baseDir . '/lib/private/PreviewNotAvailableException.php',
@@ -10,7 +10,7 @@
      'OC\\Preview\\Bitmap' => $baseDir . '/lib/private/Preview/Bitmap.php',
 --- /usr/src/nextcloud/lib/composer/composer/autoload_static.php
 +++ ./composer/composer/autoload_static.php
-@@ -1265,6 +1265,7 @@
+@@ -1266,6 +1266,7 @@
          'OC\\OCS\\Result' => __DIR__ . '/../../..' . '/lib/private/OCS/Result.php',
          'OC\\PreviewManager' => __DIR__ . '/../../..' . '/lib/private/PreviewManager.php',
          'OC\\PreviewNotAvailableException' => __DIR__ . '/../../..' . '/lib/private/PreviewNotAvailableException.php',
