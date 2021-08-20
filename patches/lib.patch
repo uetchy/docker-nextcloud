@@ -139,7 +139,7 @@
   *
   * @license AGPL-3.0
   *
-@@ -365,6 +366,8 @@
+@@ -364,6 +365,8 @@
  		$this->registerCoreProvider(Preview\Krita::class, '/application\/x-krita/');
  		$this->registerCoreProvider(Preview\MP3::class, '/audio\/mpeg/');
  		$this->registerCoreProvider(Preview\OpenDocument::class, '/application\/vnd.oasis.opendocument.*/');

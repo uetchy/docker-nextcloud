@@ -1,9 +1,11 @@
-update: build pull stop backup start
+update: build pull dbdump stop copydata start
 
 restart: stop start
 
-backup:
+copydata:
 	cp -rp data data-backup-$$(date +%s)
+
+dbdump:
 	docker-compose exec db mysqldump -u root --password=${MYSQL_ROOT_PASSWORD} nextcloud > nextcloud-$$(date +%s).dump
 
 restore:
